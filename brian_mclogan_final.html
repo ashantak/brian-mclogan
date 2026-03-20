@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brian McLogan — What This Could Look Like</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #fafaf8;
+  --bg2:      #f3f2ef;
+  --bg3:      #eceae5;
+  --white:    #ffffff;
+  --border:   #e2e0d8;
+  --border2:  #c8c5bc;
+  --text:     #1a1917;
+  --text2:    #4a4840;
+  --text3:    #8a8880;
+  --navy:     #1c2b3a;
+  --navy-s:   #243447;
+  --navy-b:   #2e4560;
+  --blue:     #1e4a7a;
+  --blue-l:   #eef3f9;
+  --blue-b:   #2d6aaa;
+  --amber:    #8a5c00;
+  --amber-l:  #fdf6e8;
+  --amber-b:  #c08020;
+  --red:      #8b2500;
+  --red-l:    #fef5f2;
+  --red-b:    #c44030;
+  --slate:    #3a5068;
+  --slate-l:  #eef2f6;
+  --mono:     'JetBrains Mono', monospace;
+  --sans:     'Inter', sans-serif;
+  --serif:    'Lora', serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.6;font-size:15px}
+
+/* NAV */
+.nav{position:fixed;right:18px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:8px;z-index:300}
+.nd{width:7px;height:7px;border-radius:50%;background:var(--border2);border:none;cursor:pointer;padding:0;transition:all .2s}
+.nd.on{background:var(--blue);transform:scale(1.5)}
+
+/* LAYOUT */
+.sec{padding:80px 64px}
+@media(max-width:768px){.sec{padding:56px 24px}}
+.inner{max-width:880px}
+
+/* TYPE */
+.eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:16px}
+.eyebrow.inv{color:rgba(255,255,255,.4)}
+.eyebrow.blue{color:var(--blue-b)}
+.eyebrow.amber{color:var(--amber-b)}
+h1{font-family:var(--serif);font-size:clamp(34px,5vw,60px);font-weight:400;line-height:1.12;letter-spacing:-.01em;margin-bottom:16px}
+h2{font-family:var(--serif);font-size:clamp(26px,3.5vw,44px);font-weight:400;line-height:1.18;margin-bottom:14px}
+h2.inv{color:#eeeae0}
+h3{font-family:var(--serif);font-size:clamp(19px,2.5vw,30px);font-weight:400;line-height:1.22;margin-bottom:12px}
+.lead{font-size:15px;color:var(--text2);font-weight:300;max-width:600px;line-height:1.8;margin-bottom:32px}
+.lead.inv{color:rgba(238,234,224,.65)}
+.divider{height:1px;background:var(--border);margin:40px 0}
+
+/* STATS ROW */
+.stats{display:inline-flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;background:var(--white);margin-top:36px}
+.stat{padding:14px 22px;border-right:1px solid var(--border)}
+.stat:last-child{border-right:none}
+.stat-n{font-family:var(--mono);font-size:19px;font-weight:500;color:var(--text)}
+.stat-k{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-top:2px}
+
+/* SCROLL HINT */
+.scroll-hint{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--text3);display:flex;align-items:center;gap:10px;margin-top:44px}
+.scroll-hint::after{content:'';display:block;width:32px;height:1px;background:var(--border2)}
+
+/* ── S1 OPENER ── */
+#s1{background:var(--bg);border-bottom:1px solid var(--border)}
+
+/* ── S2 BEFORE ── */
+#s2{background:var(--navy)}
+.before-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:1px;background:#2e3d4e;border:1px solid #2e3d4e;border-radius:6px;overflow:hidden;max-width:880px;margin-bottom:20px}
+.bc{background:#1e2d3c;padding:18px 20px}
+.bc-step{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#4a6078;margin-bottom:8px}
+.bc-task{font-size:13px;color:#b8c4d0;line-height:1.6;margin-bottom:8px}
+.bc-time{font-family:var(--mono);font-size:11px;color:#5a7088}
+.bc-time.pain{color:#c06050}
+.before-total{background:#141e28;border:1px solid #2e3d4e;border-radius:6px;padding:22px 26px;max-width:880px;display:flex;align-items:flex-start;gap:28px;flex-wrap:wrap}
+.bt-num{font-family:var(--mono);font-size:34px;font-weight:500;color:#c06050;white-space:nowrap}
+.bt-key{font-size:11px;color:#4a6078;text-transform:uppercase;letter-spacing:.07em;margin-top:3px}
+.bt-text{font-size:13px;color:#7a8fa0;line-height:1.7;max-width:500px;padding-top:4px}
+
+/* ── S3 VIDIQ COMPARISON ── */
+#s3{background:var(--bg2);border-bottom:1px solid var(--border)}
+.tool-compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:880px;margin-bottom:32px}
+@media(max-width:640px){.tool-compare{grid-template-columns:1fr}}
+.tool-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:20px;position:relative;overflow:hidden}
+.tool-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.tool-card.theirs::before{background:var(--border2)}
+.tool-card.ours::before{background:var(--blue-b)}
+.tc-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+.tool-card.theirs .tc-label{color:var(--text3)}
+.tool-card.ours .tc-label{color:var(--blue-b)}
+.tc-name{font-size:16px;font-weight:600;margin-bottom:12px}
+.tc-list{list-style:none;display:flex;flex-direction:column;gap:7px}
+.tc-item{font-size:13px;color:var(--text2);display:flex;gap:8px;line-height:1.5}
+.tc-item::before{content:'✓';color:var(--text3);font-size:11px;padding-top:2px;flex-shrink:0}
+.tool-card.ours .tc-item::before{color:var(--blue-b)}
+.tc-item.x::before{content:'✗';color:var(--red-b)}
+.tc-item.strong{color:var(--text);font-weight:500}
+
+/* ── S4 GAPS ── */
+#s4{background:var(--white);border-bottom:1px solid var(--border)}
+.gap-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:12px;max-width:880px}
+.gap-card{background:var(--red-l);border:1px solid #e8c4b4;border-radius:8px;padding:18px}
+.gc-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:7px}
+.gc-title{font-size:14px;font-weight:600;color:var(--red);margin-bottom:7px;line-height:1.35}
+.gc-text{font-size:12px;color:#7a3020;line-height:1.65}
+
+/* ── S5 PLATFORM ── */
+#s5{background:var(--bg2);border-bottom:1px solid var(--border)}
+.platform-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:10px;max-width:880px;margin-bottom:20px}
+.pc{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:16px}
+.pc-status{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.pc-status.keep{color:var(--blue-b)}
+.pc-status.fix{color:var(--amber-b)}
+.pc-status.merge{color:var(--red-b)}
+.pc-name{font-size:14px;font-weight:600;margin-bottom:6px}
+.pc-text{font-size:12px;color:var(--text2);line-height:1.6}
+.clean-stack{background:var(--blue-l);border:1px solid #bdd0e8;border-radius:8px;padding:18px 22px;max-width:880px}
+.cs-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue-b);margin-bottom:12px}
+.cs-items{display:flex;gap:10px;flex-wrap:wrap}
+.cs-item{background:var(--white);border:1px solid #bdd0e8;border-radius:6px;padding:10px 14px}
+.cs-item-n{font-size:13px;font-weight:600;color:var(--blue);margin-bottom:2px}
+.cs-item-r{font-size:11px;color:var(--blue-b)}
+
+/* ── S6 AFTER ── */
+#s6{background:var(--navy)}
+.day-flow{max-width:700px;margin-bottom:44px}
+.df-label{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#4a6078;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #2e3d4e}
+.df-step{display:flex;gap:20px;padding:15px 0;border-bottom:1px solid #1e2d3c}
+.df-step:last-child{border-bottom:none}
+.df-time{font-family:var(--mono);font-size:11px;color:#4a7898;min-width:90px;flex-shrink:0;padding-top:2px}
+.df-title{font-size:14px;font-weight:500;color:#d8d0c0;margin-bottom:3px;line-height:1.35}
+.df-detail{font-size:12px;color:#6a8098;line-height:1.65}
+.df-tag{display:inline-block;font-family:var(--mono);font-size:9px;padding:2px 8px;border-radius:3px;margin-top:5px;background:rgba(255,255,255,.06);color:#4a7898;letter-spacing:.05em}
+.after-nums{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:1px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:8px;overflow:hidden;max-width:880px}
+.an{background:rgba(255,255,255,.03);padding:20px}
+.an-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#4a6078;margin-bottom:7px}
+.an-val{font-family:var(--mono);font-size:24px;font-weight:500;color:#d8d0c0;margin-bottom:5px}
+.an-val.amber{color:#c8a040}
+.an-how{font-size:12px;color:#5a7080;line-height:1.6}
+
+/* ── S7 MACHINE ── */
+#s7{background:var(--bg);padding-bottom:60px}
+.chain{max-width:820px;margin-bottom:52px}
+.chain-label{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.cs2{display:flex;gap:16px;position:relative}
+.cs2::before{content:'';position:absolute;left:15px;top:34px;height:calc(100% - 8px);width:1px;background:var(--border)}
+.cs2:last-child::before{display:none}
+.cs2-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:500;flex-shrink:0;margin-top:6px;position:relative;z-index:1}
+.cs2-dot.you{background:#f0ede6;border:1px solid var(--border2);color:var(--text2)}
+.cs2-dot.auto{background:var(--blue-l);border:1px solid var(--blue-b);color:var(--blue)}
+.cs2-dot.intel{background:var(--amber-l);border:1px solid var(--amber-b);color:var(--amber)}
+.cs2-body{flex:1;padding:6px 0 22px}
+.cs2-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:3px;cursor:pointer;display:flex;align-items:center;gap:8px;line-height:1.35}
+.cs2-title:hover{color:var(--blue)}
+.cs2-hint{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:.04em;font-weight:400}
+.cs2-sub{font-size:12px;color:var(--text3);line-height:1.55}
+.cs2-detail{display:none;margin-top:10px;padding:13px 15px;background:var(--blue-l);border-left:2px solid var(--blue-b);border-radius:0 6px 6px 0;font-size:13px;color:var(--text2);line-height:1.7}
+.cs2-detail.open{display:block}
+
+/* INTEL CARDS */
+.intel-wrap{max-width:880px}
+.ic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.ic{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:16px;cursor:pointer;transition:border-color .15s,background .15s}
+.ic:hover{border-color:var(--blue-b)}
+.ic.open{border-color:var(--blue-b);background:var(--blue-l)}
+.ic-cat{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue-b);margin-bottom:6px}
+.ic-q{font-size:13px;font-weight:600;margin-bottom:4px;line-height:1.35}
+.ic-prev{font-size:11px;color:var(--text3);line-height:1.5}
+.ic-body{display:none;margin-top:10px;padding-top:10px;border-top:1px solid rgba(30,74,122,.12);font-size:12px;color:var(--text2);line-height:1.7}
+.ic-body.open{display:block}
+
+/* ── S8 DISTRIBUTION ── */
+#s8{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.dist-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:10px;max-width:880px;margin-bottom:28px}
+.dc{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:16px}
+.dc-platform{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.dc-title{font-size:13px;font-weight:600;margin-bottom:6px}
+.dc-text{font-size:12px;color:var(--text2);line-height:1.6}
+.dc-tag{display:inline-block;font-family:var(--mono);font-size:8px;padding:2px 7px;border-radius:3px;margin-top:7px;background:var(--blue-l);color:var(--blue);border:1px solid #bdd0e8;letter-spacing:.04em}
+.timing-box{max-width:880px;border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--white)}
+.timing-hdr{background:var(--navy);padding:10px 18px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#4a6078}
+.timing-body{display:flex;flex-wrap:wrap}
+.ti{flex:1;min-width:110px;padding:13px 15px;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.ti-time{font-family:var(--mono);font-size:11px;color:var(--blue-b);margin-bottom:4px}
+.ti-what{font-size:12px;color:var(--text2);line-height:1.5}
+
+/* ── S9 RESOURCES ── */
+#s9{background:var(--white);border-bottom:1px solid var(--border)}
+.res-from{max-width:880px;margin-bottom:32px}
+.res-from-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.res-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.res-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px}
+.res-type{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.res-type.free{color:var(--text3)}
+.res-type.paid{color:var(--amber-b)}
+.res-type.yt{color:var(--blue-b)}
+.res-name{font-size:13px;font-weight:600;margin-bottom:5px}
+.res-desc{font-size:12px;color:var(--text2);line-height:1.6}
+.res-price{font-family:var(--mono);font-size:12px;color:var(--amber);margin-top:7px;font-weight:500}
+
+/* PRICING LADDER */
+.price-ladder{max-width:880px}
+.pl-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.pl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.pl-tier{background:var(--white);padding:16px;border-right:1px solid var(--border)}
+.pl-tier:last-child{border-right:none}
+.pl-tier-label{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.pl-tier-name{font-size:13px;font-weight:600;margin-bottom:4px}
+.pl-tier-price{font-family:var(--mono);font-size:16px;font-weight:500;color:var(--amber);margin-bottom:6px}
+.pl-tier-desc{font-size:11px;color:var(--text2);line-height:1.5}
+
+/* ── S10 SPONSORSHIP ── */
+#s10{background:var(--bg2);border-bottom:1px solid var(--border)}
+.spons-numbers{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;max-width:880px;margin-bottom:28px;background:var(--white)}
+@media(max-width:500px){.spons-numbers{grid-template-columns:1fr}}
+.sn{padding:20px;border-right:1px solid var(--border)}
+.sn:last-child{border-right:none}
+.sn-label{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:7px}
+.sn-val{font-family:var(--mono);font-size:26px;font-weight:500;color:var(--amber);margin-bottom:4px}
+.sn-how{font-size:12px;color:var(--text2);line-height:1.5}
+.brand-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;max-width:880px;margin-bottom:28px}
+.brand-card{background:var(--white);border:1px solid var(--border);border-radius:6px;padding:14px}
+.brand-name{font-size:13px;font-weight:600;margin-bottom:4px}
+.brand-why{font-size:11px;color:var(--text2);line-height:1.5}
+.brand-rate{font-family:var(--mono);font-size:10px;color:var(--amber);margin-top:5px}
+.spons-pipeline{max-width:880px}
+.sp-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.sp-steps{list-style:none;display:flex;flex-direction:column}
+.sp-step{display:flex;gap:14px;padding:11px 0;border-bottom:1px solid var(--border)}
+.sp-step:last-child{border-bottom:none}
+.sp-n{font-family:var(--mono);font-size:11px;color:var(--text3);min-width:24px;flex-shrink:0;padding-top:2px}
+.sp-body{flex:1}
+.sp-name{font-size:13px;font-weight:600;margin-bottom:2px}
+.sp-what{font-size:12px;color:var(--text2);line-height:1.5}
+.sp-auto{font-family:var(--mono);font-size:10px;color:var(--blue-b);margin-top:3px}
+
+/* ── S11 KAJABI UNUSED ── */
+#s11{background:var(--white);border-bottom:1px solid var(--border)}
+.kajabi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;max-width:880px}
+.kj{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px}
+.kj-label{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--blue-b);margin-bottom:7px}
+.kj-name{font-size:13px;font-weight:600;margin-bottom:5px}
+.kj-text{font-size:12px;color:var(--text2);line-height:1.6}
+.kj-why{font-family:var(--mono);font-size:10px;color:var(--amber-b);margin-top:6px}
+
+/* ── S12 DASHBOARD ── */
+#s12{background:var(--bg2)}
+.dash-mock{background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;max-width:960px;box-shadow:0 2px 20px rgba(0,0,0,.05)}
+.dash-bar{background:var(--navy);padding:12px 20px;display:flex;align-items:center;justify-content:space-between}
+.dash-bar-t{font-family:var(--mono);font-size:11px;color:#4a6078;letter-spacing:.08em}
+.dash-bar-d{font-family:var(--mono);font-size:10px;color:#2e3d4e}
+.dash-inner{padding:18px}
+.dash-row4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+@media(max-width:600px){.dash-row4{grid-template-columns:repeat(2,1fr)}}
+.dm2{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:13px}
+.dm2-l{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:5px}
+.dm2-v{font-family:var(--mono);font-size:20px;font-weight:500;margin-bottom:2px}
+.dm2-v.blue{color:var(--blue)}
+.dm2-v.amber{color:var(--amber)}
+.dm2-s{font-size:11px;color:var(--text3)}
+.dash-row2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+@media(max-width:640px){.dash-row2{grid-template-columns:1fr}}
+.dash-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:0}
+@media(max-width:700px){.dash-row3{grid-template-columns:1fr}}
+.dp2{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:14px}
+.dp2-title{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;padding-bottom:7px;border-bottom:1px solid var(--border)}
+.idea-list{list-style:none}
+.idea-item{padding:8px 0;border-bottom:1px solid var(--border)}
+.idea-item:last-child{border-bottom:none}
+.idea-rank{font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:3px}
+.idea-name{font-size:12px;font-weight:600;margin-bottom:2px;color:var(--text)}
+.idea-why{font-size:11px;color:var(--text3);line-height:1.4}
+.idea-tags{display:flex;gap:3px;margin-top:4px;flex-wrap:wrap}
+.itag{font-family:var(--mono);font-size:8px;padding:1px 5px;border-radius:2px;letter-spacing:.04em}
+.itag.rev{background:var(--blue-l);color:var(--blue);border:1px solid #bdd0e8}
+.itag.sea{background:var(--amber-l);color:var(--amber);border:1px solid #d4b848}
+.itag.gap{background:#f0eaf8;color:#6a2a9a;border:1px solid #c8a8e0}
+.appr-list{list-style:none}
+.appr-item{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);gap:8px}
+.appr-item:last-child{border-bottom:none}
+.appr-name{font-size:11px;color:var(--text2);flex:1;line-height:1.4}
+.appr-b{font-family:var(--mono);font-size:8px;padding:2px 6px;border-radius:3px;white-space:nowrap;letter-spacing:.04em}
+.appr-b.ready{background:var(--blue-l);color:var(--blue);border:1px solid #bdd0e8}
+.appr-b.urgent{background:var(--red-l);color:var(--red);border:1px solid #e8c4b8}
+.rev-list{list-style:none}
+.rev-item{display:flex;justify-content:space-between;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--border);gap:8px}
+.rev-item:last-child{border-bottom:none}
+.rev-src{font-size:11px;color:var(--text2);flex:1;line-height:1.4}
+.rev-val{font-family:var(--mono);font-size:10px;color:var(--blue);white-space:nowrap;font-weight:500}
+.ft-list{list-style:none}
+.ft-item{padding:7px 0;border-bottom:1px solid var(--border)}
+.ft-item:last-child{border-bottom:none}
+.ft-what{font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px}
+.ft-why{font-size:11px;color:var(--text3);line-height:1.4}
+.ft-action{font-family:var(--mono);font-size:9px;color:var(--blue-b);margin-top:2px}
+.cm-list{list-style:none}
+.cm-item{padding:7px 0;border-bottom:1px solid var(--border)}
+.cm-item:last-child{border-bottom:none}
+.cm-type{font-family:var(--mono);font-size:8px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}
+.cm-type.q{color:var(--amber-b)}.cm-type.w{color:var(--blue-b)}.cm-type.s{color:#6a2a9a}
+.cm-text{font-size:11px;color:var(--text2);line-height:1.4}
+.cm-draft{font-size:10px;color:var(--blue-b);margin-top:2px;font-style:italic}
+
+/* ── S13 BUILD ── */
+#s13{background:var(--white);border-top:1px solid var(--border)}
+.phase-list{max-width:820px;display:flex;flex-direction:column;gap:10px}
+.phase-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.phase-hdr{display:flex;align-items:center;gap:14px;padding:15px 18px;cursor:pointer;transition:background .15s}
+.phase-hdr:hover{background:var(--blue-l)}
+.p-badge{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:500;flex-shrink:0;background:var(--blue-l);color:var(--blue);border:1px solid var(--blue-b)}
+.p-info{flex:1}
+.p-name{font-size:14px;font-weight:600;margin-bottom:1px}
+.p-when{font-family:var(--mono);font-size:10px;color:var(--text3)}
+.p-tog{font-family:var(--mono);font-size:15px;color:var(--text3)}
+.phase-body{display:none;padding:18px;border-top:1px solid var(--border);background:var(--white)}
+.phase-body.open{display:block}
+.prereq{background:var(--blue-l);border:1px solid #bdd0e8;border-radius:6px;padding:12px 15px;margin-bottom:14px;font-size:12px;color:var(--text2);line-height:1.65}
+.prereq strong{display:block;font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--blue-b);margin-bottom:4px}
+.step-list{list-style:none;display:flex;flex-direction:column}
+.step-item{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid var(--border)}
+.step-item:last-child{border-bottom:none}
+.step-when{font-family:var(--mono);font-size:10px;color:var(--text3);min-width:60px;flex-shrink:0;padding-top:2px}
+.step-body{flex:1}
+.step-name{font-size:13px;font-weight:600;margin-bottom:2px}
+.step-what{font-size:12px;color:var(--text2);line-height:1.5}
+.step-dep{font-family:var(--mono);font-size:10px;color:var(--blue-b);margin-top:2px}
+
+/* ── S14 CLOSE ── */
+#s14{background:var(--navy)}
+
+/* DISCLAIMER */
+.disclaimer{background:#141e28;padding:13px 64px;font-family:var(--mono);font-size:10px;color:#2e3d4e;border-top:1px solid #1e2d3c;line-height:1.6}
+</style>
+</head>
+<body>
+
+<div class="nav" id="nav">
+  <button class="nd on" onclick="go('s1')"></button>
+  <button class="nd" onclick="go('s2')"></button>
+  <button class="nd" onclick="go('s3')"></button>
+  <button class="nd" onclick="go('s4')"></button>
+  <button class="nd" onclick="go('s5')"></button>
+  <button class="nd" onclick="go('s6')"></button>
+  <button class="nd" onclick="go('s7')"></button>
+  <button class="nd" onclick="go('s8')"></button>
+  <button class="nd" onclick="go('s9')"></button>
+  <button class="nd" onclick="go('s10')"></button>
+  <button class="nd" onclick="go('s11')"></button>
+  <button class="nd" onclick="go('s12')"></button>
+  <button class="nd" onclick="go('s13')"></button>
+  <button class="nd" onclick="go('s14')"></button>
+</div>
+
+<!-- S1 OPENER -->
+<div class="sec" id="s1">
+  <div class="inner">
+    <span class="eyebrow">Prepared for Brian McLogan</span>
+    <h1>What your channel<br>could run like</h1>
+    <p class="lead">This is an honest look at where things are today, where revenue is being left on the table, and what a system built around your specific situation could actually produce — without asking you to do more.</p>
+    <div class="stats">
+      <div class="stat"><div class="stat-n">1.62M</div><div class="stat-k">Subscribers</div></div>
+      <div class="stat"><div class="stat-n">13,456</div><div class="stat-k">Videos</div></div>
+      <div class="stat"><div class="stat-n">15 yrs</div><div class="stat-k">Showing up</div></div>
+      <div class="stat"><div class="stat-n">3×/wk</div><div class="stat-k">Uploading</div></div>
+    </div>
+    <div class="scroll-hint">Scroll through</div>
+  </div>
+</div>
+
+<!-- S2 BEFORE -->
+<div class="sec" id="s2">
+  <div class="inner">
+    <span class="eyebrow inv">Right now — the honest picture</span>
+    <h2 class="inv">Every upload is a full day's work<br>before the video goes live.</h2>
+    <div class="before-grid">
+      <div class="bc"><div class="bc-step">Step 1 — Deciding what to make</div><div class="bc-task">VidIQ gives daily ideas based on YouTube search volume. You review them, use your instincts, and pick something. But there is no connection between those ideas and what actually drives course sales in Kajabi.</div><div class="bc-time pain">No revenue signal. Just search volume and gut feel.</div></div>
+      <div class="bc"><div class="bc-step">Step 2 — Preparing the math content</div><div class="bc-task">Write out the problems, figure out the format, decide what to include. Sometimes ChatGPT helps. Still a manual step that happens separately from everything else.</div><div class="bc-time pain">30–60 minutes, disconnected from the upload workflow</div></div>
+      <div class="bc"><div class="bc-step">Step 3 — Recording</div><div class="bc-task">The actual work. The part only you can do. The reason 1.62 million people subscribed.</div><div class="bc-time">20–40 minutes — the only step that should exist</div></div>
+      <div class="bc"><div class="bc-step">Step 4 — Description and metadata</div><div class="bc-task">VidIQ helps generate a description draft optimized for YouTube SEO. But it does not know which Kajabi course to link, which email segment to notify, or where to put the worksheet download.</div><div class="bc-time pain">Still requires manual additions for every revenue touchpoint</div></div>
+      <div class="bc"><div class="bc-step">Step 5 — Thumbnail</div><div class="bc-task">Send to a freelancer. Brief them. Wait for the draft. Review it. Revise it. Wait again. No A/B testing. No data on which styles actually convert for your specific audience.</div><div class="bc-time pain">1–3 days of back and forth, no performance learning</div></div>
+      <div class="bc"><div class="bc-step">Step 6 — Upload and wait</div><div class="bc-task">Video goes live on YouTube. Community tab has been silent for 2+ years. Five subject channels get nothing. TikTok gets nothing. Email list does not grow from this upload unless someone clicks the checklist link buried in the description.</div><div class="bc-time pain">No coordinated distribution. No email capture. Just the algorithm.</div></div>
+      <div class="bc"><div class="bc-step">Step 7 — Email list reality</div><div class="bc-task">The list in Kajabi is mostly people who purchased a course — not viewers converting from YouTube. No active opt-in sequence running. No worksheet download capturing emails. The list is not growing from YouTube traffic.</div><div class="bc-time pain">1.62M viewers. Email list not connected to any of them.</div></div>
+      <div class="bc"><div class="bc-step">Step 8 — Everything else not happening</div><div class="bc-task">Kajabi automation idle. No course-matched emails firing on publish. No sponsorship pipeline. Facebook Community getting nothing automatically. YouTube Members data unused. Revenue leaving every week.</div><div class="bc-time pain">Infrastructure paid for. Most of it sitting still.</div></div>
+    </div>
+    <div class="before-total">
+      <div><div class="bt-num">8–12 hrs</div><div class="bt-key">Per upload in non-recording work</div></div>
+      <div class="bt-text">Three uploads per week means 24–36 hours monthly on administration. That is nearly a full work week every month spent on things a system should handle. The goal is to bring that under an hour total — with recording being almost all of it.</div>
+    </div>
+  </div>
+</div>
+
+<!-- S3 VIDIQ COMPARISON -->
+<div class="sec" id="s3">
+  <div class="inner">
+    <span class="eyebrow">What VidIQ does vs what this system does</span>
+    <h2>VidIQ is a good tool.<br>It sees one thing. This sees everything.</h2>
+    <p class="lead">VidIQ is not the problem. It does real work for YouTube SEO. The gap is that it has no visibility into your revenue, your email list, or your Kajabi data — so every recommendation it makes is based on views, not income.</p>
+    <div class="tool-compare">
+      <div class="tool-card theirs">
+        <div class="tc-label">VidIQ — what it does</div>
+        <div class="tc-name">YouTube SEO + idea tool</div>
+        <ul class="tc-list">
+          <li class="tc-item strong">Keyword research and search volume data</li>
+          <li class="tc-item strong">Daily video ideas based on YouTube trends</li>
+          <li class="tc-item strong">AI description and title drafts for SEO</li>
+          <li class="tc-item strong">Competitor channel analysis</li>
+          <li class="tc-item strong">Thumbnail generation tools (new in 2025)</li>
+          <li class="tc-item strong">AI script writer</li>
+          <li class="tc-item strong">Shorts scorecard and performance data</li>
+          <li class="tc-item x">Cannot see Kajabi purchase history</li>
+          <li class="tc-item x">Cannot connect a video to a course sale</li>
+          <li class="tc-item x">Cannot rank ideas by revenue potential</li>
+          <li class="tc-item x">Cannot trigger email sequences on publish</li>
+          <li class="tc-item x">Cannot see email behavior or Kajabi pipeline</li>
+          <li class="tc-item x">Cannot generate worksheets or resource bundles</li>
+        </ul>
+      </div>
+      <div class="tool-card ours">
+        <div class="tc-label">This system — what it adds</div>
+        <div class="tc-name">Revenue intelligence layer</div>
+        <ul class="tc-list">
+          <li class="tc-item strong">Ranks video ideas by which topics historically drive Kajabi purchases — not just views</li>
+          <li class="tc-item strong">Connects YouTube viewing behavior to Kajabi revenue for the first time</li>
+          <li class="tc-item strong">Generates worksheet PDF, YouTube quiz, and resource bundle automatically from transcript</li>
+          <li class="tc-item strong">Fires the right Kajabi email to the right segment on every publish</li>
+          <li class="tc-item strong">Identifies high-intent non-converters in Kajabi and retargets them</li>
+          <li class="tc-item strong">Pulls Google Search Console data for organic demand signals VidIQ cannot see</li>
+          <li class="tc-item strong">Tracks recommendation outcomes — was it followed, did revenue increase?</li>
+          <li class="tc-item strong">Fine-tuning panel shows what it learned this week and what it adjusted</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S4 GAPS -->
+<div class="sec" id="s4">
+  <div class="inner">
+    <span class="eyebrow">Where the money is going</span>
+    <h2>The audience is there. The infrastructure<br>is there. The connections are not.</h2>
+    <p class="lead">These are not hypothetical improvements. These are specific revenue streams that exist today — they are just not being captured.</p>
+    <div class="gap-grid">
+      <div class="gap-card"><div class="gc-label">Revenue gap</div><div class="gc-title">No email sequences running in Kajabi</div><div class="gc-text">You have an email list. Kajabi has full automation built in. Nothing fires when a video publishes. Every week without sequences is course revenue that disappears silently.</div></div>
+      <div class="gap-card"><div class="gc-label">Revenue gap</div><div class="gc-title">AdSense when sponsors pay $10K–$20K per read</div><div class="gc-text">At 1.62M subscribers in math education, direct sponsors pay $10,000–$20,000 per 60-second integration. No outreach system exists. No rate card. No pipeline. That revenue does not exist yet.</div></div>
+      <div class="gap-card"><div class="gc-label">Revenue gap</div><div class="gc-title">No system connecting a view to a purchase</div><div class="gc-text">YouTube and Kajabi are two islands. No tool currently shows which videos drive course sales. Without that connection, every content decision is a guess. With it, every decision is data.</div></div>
+      <div class="gap-card"><div class="gc-label">Revenue gap</div><div class="gc-title">Email list not growing from YouTube traffic</div><div class="gc-text">The checklist link is buried after the Udemy link in descriptions. No worksheet download capturing emails on every upload. 1.62M monthly viewers and the list is not connected to any of them systematically.</div></div>
+      <div class="gap-card"><div class="gc-label">Distribution gap</div><div class="gc-title">Five subject channels getting nothing</div><div class="gc-text">Calculus, Pre-Calculus, Algebra 2, Algebra 1, and Geometry channels each have subscribers receiving zero automatic content. Dormant distribution assets that cost nothing to activate.</div></div>
+      <div class="gap-card"><div class="gc-label">Distribution gap</div><div class="gc-title">Community tab silent for 2+ years</div><div class="gc-text">Community posts notify subscribers directly, bypassing the algorithm. 1.62M people could receive a notification on every upload. They do not. The tab has been inactive for over two years.</div></div>
+      <div class="gap-card"><div class="gc-label">Distribution gap</div><div class="gc-title">Facebook Community getting nothing automatic</div><div class="gc-text">The Facebook Community is linked in the description. New video announcements, resource drops, and challenge posts could go there automatically on every upload. Nothing is flowing there now.</div></div>
+      <div class="gap-card"><div class="gc-label">Revenue gap</div><div class="gc-title">Course pricing architecture is missing</div><div class="gc-text">Current products range from $2.99 to $10. No free lead magnet feeding an email sequence. No premium tier. No payment plans with Afterpay or Klarna. A $97 course becomes $24 every two weeks with Klarna. That changes who can buy.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S5 PLATFORM -->
+<div class="sec" id="s5">
+  <div class="inner">
+    <span class="eyebrow">Simplifying the stack</span>
+    <h2>Four platforms. Three of them<br>doing overlapping jobs.</h2>
+    <p class="lead">Here is the honest recommendation on each platform and what changes.</p>
+    <div class="platform-grid">
+      <div class="pc"><div class="pc-status keep">Keep — primary platform</div><div class="pc-name">Kajabi</div><div class="pc-text">Email list, courses, automation, digital downloads, and community all live here. Becomes the single commerce hub. Everything else feeds into it. You are already paying for all of this — most of it is idle.</div></div>
+      <div class="pc"><div class="pc-status fix">Restructure — discovery only</div><div class="pc-name">Udemy</div><div class="pc-text">Students searching Udemy find you without any effort. Keep that. But every Udemy listing drives to Kajabi for the full course where you keep 90%+ instead of 25–50%. Udemy becomes a top-of-funnel channel, not a store.</div></div>
+      <div class="pc"><div class="pc-status merge">Consolidate into Kajabi</div><div class="pc-name">Shopify</div><div class="pc-text">Kajabi handles digital product sales natively including worksheets, PDF bundles, and practice packs. One fewer platform. One unified customer record. One less monthly cost. Only reason to keep Shopify is physical products — you have none.</div></div>
+      <div class="pc"><div class="pc-status keep">Keep — brand home</div><div class="pc-name">freemathvideos.com</div><div class="pc-text">Your owned domain. Hosted on Kajabi already. Gets promoted more aggressively as the primary destination from every video description — above the Udemy link, not below it.</div></div>
+    </div>
+    <div class="clean-stack">
+      <div class="cs-label">Simplified stack going forward</div>
+      <div class="cs-items">
+        <div class="cs-item"><div class="cs-item-n">Kajabi</div><div class="cs-item-r">Commerce + email + courses</div></div>
+        <div class="cs-item"><div class="cs-item-n">Udemy</div><div class="cs-item-r">Discovery → feeds Kajabi</div></div>
+        <div class="cs-item"><div class="cs-item-n">freemathvideos.com</div><div class="cs-item-r">Brand home, Kajabi-hosted</div></div>
+        <div class="cs-item"><div class="cs-item-n">YouTube</div><div class="cs-item-r">Long-form engine</div></div>
+        <div class="cs-item"><div class="cs-item-n">TikTok</div><div class="cs-item-r">Cold audience acquisition</div></div>
+        <div class="cs-item"><div class="cs-item-n">Facebook Community</div><div class="cs-item-r">Warm audience engagement</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S6 AFTER -->
+<div class="sec" id="s6">
+  <div class="inner">
+    <span class="eyebrow inv">What it looks like with the system running</span>
+    <h2 class="inv">You record the video.<br>Everything else runs itself.</h2>
+    <p class="lead inv">Same upload frequency. Under an hour total. A realistic picture of what Tuesday looks like once the system is built.</p>
+    <div class="day-flow">
+      <div class="df-label">A Tuesday — upload day</div>
+      <div class="df-step"><div class="df-time">Morning</div><div><div class="df-title">Open the dashboard. Three things waiting.</div><div class="df-detail">Thumbnail A or B. Email draft. Community post draft. Everything already written. You pick the thumbnail, approve the email, approve the post.</div><span class="df-tag">10 minutes total</span></div></div>
+      <div class="df-step"><div class="df-time">Mid-morning</div><div><div class="df-title">Record the video. The only real work.</div><div class="df-detail">The dashboard surfaced the top five video ideas ranked by revenue potential — not just search volume. You picked one yesterday. You record it.</div><span class="df-tag">30 minutes recording</span></div></div>
+      <div class="df-step"><div class="df-time">After recording</div><div><div class="df-title">Drop the file to Drive. Walk away.</div><div class="df-detail">Transcript generated. Worksheet PDF built. YouTube quiz formatted. Description and chapters written. Email drafted. Community post drafted. Two thumbnail concepts created. Right Kajabi course identified and linked. TikTok caption written separately from Shorts caption.</div><span class="df-tag">Fully automatic — zero time from you</span></div></div>
+      <div class="df-step"><div class="df-time">Afternoon</div><div><div class="df-title">Quick review. One tap. Published everywhere.</div><div class="df-detail">YouTube live with full metadata. Email sends to the matched Kajabi segment. Community tab notifies subscribers. Facebook Community gets an announcement. All five subject channels post. Shorts queued. TikTok clip ready.</div><span class="df-tag">15 minutes to review and approve</span></div></div>
+      <div class="df-step"><div class="df-time">Evening</div><div><div class="df-title">Nothing. The system monitors the launch.</div><div class="df-detail">24-hour performance check. If view velocity is below average, a second community push fires automatically. Shorts posts at H4 and H48. TikTok posts at H24 and H48. You are not involved.</div><span class="df-tag">Zero time</span></div></div>
+    </div>
+    <div class="after-nums">
+      <div class="an"><div class="an-label">Time per upload</div><div class="an-val">~55 min</div><div class="an-how">From 8–12 hours to under an hour. Recording plus two short approval sessions.</div></div>
+      <div class="an"><div class="an-label">Sponsorship potential</div><div class="an-val amber">$20K–$40K/mo</div><div class="an-how">Two deals per month at $10K–$20K each. Conservative for 1.62M subscribers in math education. Based on current market rates.</div></div>
+      <div class="an"><div class="an-label">Course revenue lift</div><div class="an-val">Measurably more</div><div class="an-how">Email sequences running. Course match agent live. Lead magnet capturing emails from every upload. Exact lift depends on Kajabi data once connected.</div></div>
+      <div class="an"><div class="an-label">System accuracy</div><div class="an-val amber">Gets better</div><div class="an-how">Every recommendation tracked against its outcome. Month 6 recommendations are more accurate than month 1 because the system learned from real data.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S7 MACHINE -->
+<div class="sec" id="s7">
+  <div class="inner">
+    <span class="eyebrow">How it actually works</span>
+    <h2>Plain English. What happens<br>and why it matters to you.</h2>
+    <p class="lead">Each step fires automatically after you drop the file. Tap any step to expand it.</p>
+    <div class="chain">
+      <div class="chain-label">The upload trigger chain</div>
+      <div class="cs2"><div class="cs2-dot you">You</div><div class="cs2-body"><div class="cs2-title">Drop the raw video file to Google Drive</div><div class="cs2-sub">That is the only trigger. Everything below fires automatically from this one action.</div></div></div>
+      <div class="cs2"><div class="cs2-dot auto">1</div><div class="cs2-body"><div class="cs2-title" onclick="tc('c1')">Transcript generated <span class="cs2-hint">tap to expand</span></div><div class="cs2-sub">Audio converted to text in minutes. Feeds every step below.</div><div class="cs2-detail" id="c1">The transcript is the source document for everything that follows. Every output — the worksheet, the YouTube quiz, the description, the email, the thumbnail brief — is generated from this one document. You never have to type anything about the video's content again.</div></div></div>
+      <div class="cs2"><div class="cs2-dot auto">2</div><div class="cs2-body"><div class="cs2-title" onclick="tc('c2')">Worksheet PDF generated automatically <span class="cs2-hint">tap to expand</span></div><div class="cs2-sub">Math problems identified, formatted, PDF with answer key ready. No freelancer. No manual work.</div><div class="cs2-detail" id="c2">This worksheet serves two purposes simultaneously. As a free download in the description it captures an email address — every upload becomes a funnel entry point. As a premium bundle in Kajabi it is a paid product. The system generates both versions. One recording session produces a free lead magnet and a paid resource without you doing anything extra.</div></div></div>
+      <div class="cs2"><div class="cs2-dot intel">3</div><div class="cs2-body"><div class="cs2-title" onclick="tc('c3')">YouTube in-video quiz generated <span class="cs2-hint">tap to expand</span></div><div class="cs2-sub">YouTube now supports creator-authored quizzes embedded directly in the video. The system drafts one from the transcript.</div><div class="cs2-detail" id="c3">YouTube rolled out in-video quizzes in early 2026. Creators add a question that appears mid-video and viewers answer in real time. For a math education channel this is significant — a practice problem embedded at the right moment increases watch time, improves retention signals to YouTube's algorithm, and reinforces learning. The system identifies the best problem from the transcript and formats the quiz for YouTube Studio. You approve it alongside everything else.</div></div></div>
+      <div class="cs2"><div class="cs2-dot auto">4</div><div class="cs2-body"><div class="cs2-title" onclick="tc('c4')">Description, chapters, and tags written <span class="cs2-hint">tap to expand</span></div><div class="cs2-sub">SEO description in your voice. Chapters generated. All revenue links inserted in the correct order.</div><div class="cs2-detail" id="c4">VidIQ generates a description draft optimized for YouTube search. This system does that and adds everything VidIQ cannot: the worksheet download link first, the matching Kajabi course link, the freemathvideos.com link, the members section mention, and the sub-channel subscription link — all placed correctly every time. Chapters improve how YouTube indexes the video for search terms students actually use.</div></div></div>
+      <div class="cs2"><div class="cs2-dot intel">5</div><div class="cs2-body"><div class="cs2-title" onclick="tc('c5')">Two thumbnail concepts for A/B test <span class="cs2-hint">tap to expand</span></div><div class="cs2-sub">No more freelancer wait. Two options generated. System tests both and applies the winner at 24 hours.</div><div class="cs2-detail" id="c5">Both thumbnails go live. The system measures which gets clicked more at 24 hours, applies the winner, and logs the pattern. After 50+ uploads the system knows which visual styles convert best for your specific audience. VidIQ has a thumbnail tool. The difference is this system tests in the real world with your real audience and learns from the results automatically.</div></div></div>
+      <div class="cs2"><div class="cs2-dot auto">6</div><div class="cs2-body"><div class="cs2-title" onclick="tc('c6')">Email draft, community post, Facebook post written <span class="cs2-hint">tap to expand</span></div><div class="cs2-sub">Newsletter-style email from the video content. Community tab post. Facebook Community announcement. All in dashboard for approval.</div><div class="cs2-detail" id="c6">The email sounds like you talking to a student, not marketing. It links to the video, the worksheet, and the relevant course. The community post reactivates a channel silent for 2+ years — subscribers get a direct notification regardless of whether YouTube shows the video in their feed. The Facebook post fires to your community group, keeping it active without extra effort.</div></div></div>
+      <div class="cs2"><div class="cs2-dot intel">7</div><div class="cs2-body"><div class="cs2-title" onclick="tc('c7')">Right Kajabi course linked and email segment targeted <span class="cs2-hint">tap to expand</span></div><div class="cs2-sub">Topic identified. Matching course linked in description. Email fires to the subscribers most likely to buy that specific course.</div><div class="cs2-detail" id="c7">This is the connection that currently does not exist anywhere. YouTube and Kajabi are two islands. A Pre-Calculus video has no automatic path to your Pre-Calculus course. This step creates that path on every single upload — and it knows which Kajabi email segment to target based on their past behavior, not just their topic tag.</div></div></div>
+      <div class="cs2"><div class="cs2-dot auto">8</div><div class="cs2-body"><div class="cs2-title" onclick="tc('c8')">Shorts and TikTok clips extracted with separate strategies <span class="cs2-hint">tap to expand</span></div><div class="cs2-sub">Three high-retention moments pulled. Shorts caption drives back to full video. TikTok caption written to hook a stranger. Same clip, different strategy.</div><div class="cs2-detail" id="c8">YouTube Shorts surfaces to people who already know you. TikTok surfaces to people who have never heard of you. A student who finds you on TikTok, watches three clips, follows, and eventually lands on YouTube is a new subscriber who cost nothing to acquire. The same clip cannot serve both audiences with the same caption. The system writes both versions automatically.</div></div></div>
+      <div class="cs2"><div class="cs2-dot auto">9</div><div class="cs2-body"><div class="cs2-title" onclick="tc('c9')">Five subject channels auto-posted, correct playlist assigned <span class="cs2-hint">tap to expand</span></div><div class="cs2-sub">Topic identified. Posted to matching sub-channel. Playlist assigned. Zero additional work.</div><div class="cs2-detail" id="c9">Five channels — Calculus, Pre-Calculus, Algebra 2, Algebra 1, Geometry — each with real subscribers getting nothing automatically. Once connected, every relevant upload reaches an additional targeted audience. Each sub-channel is a dormant distribution asset. This step activates all five with one connection setup.</div></div></div>
+      <div class="cs2"><div class="cs2-dot intel">10</div><div class="cs2-body"><div class="cs2-title" onclick="tc('c10')">Comment intelligence scans recent comments <span class="cs2-hint">tap to expand</span></div><div class="cs2-sub">Comments categorized. Reply drafts written. Confusion signals logged as content ideas. Student wins flagged. You post manually — agent never posts on your behalf.</div><div class="cs2-detail" id="c10">Comments are sorted into four categories: questions worth answering publicly, student wins worth acknowledging, confusion signals indicating content gaps, and everything else. Draft replies surface in the dashboard for the first two. For new videos with no comments yet, the system looks at which community post formats performed best historically and uses that pattern. The agent never posts autonomously — YouTube TOS compliant.</div></div></div>
+      <div class="cs2"><div class="cs2-dot you">You</div><div class="cs2-body"><div class="cs2-title">Open the dashboard. Review three items. Tap approve.</div><div class="cs2-sub">Everything above is already done. You pick the thumbnail, review the email, approve the community post. One tap publishes everything simultaneously. Total time: 10–15 minutes.</div></div></div>
+    </div>
+
+    <!-- INTEL CARDS -->
+    <div class="intel-wrap">
+      <span class="eyebrow blue">What the system figures out on its own</span>
+      <h3>Questions you currently have no reliable way to answer</h3>
+      <p class="lead" style="margin-bottom:20px">Beyond automating the upload, the system continuously analyzes YouTube, Kajabi, Google Search Console, and external trends to surface answers that do not exist in any single tool you currently use.</p>
+      <div class="ic-grid">
+        <div class="ic" onclick="toggleIc(this)"><div class="ic-cat">Content intelligence</div><div class="ic-q">What should I make next, and when?</div><div class="ic-prev">Top 5 ideas ranked by revenue potential — not just search volume.</div><div class="ic-body">The system combines your Kajabi purchase history, YouTube retention data, catalog gaps, Google Search Console queries, Google Trends, and the academic calendar. The output: make a Pre-Calculus unit circle video this week because search volume is up 34% into finals season, you have no video on this topic in 90 days, and unit circle content historically drives your highest Kajabi purchase rate. VidIQ sees the search volume. This system sees the revenue connection. Those are different rankings.</div></div>
+        <div class="ic" onclick="toggleIc(this)"><div class="ic-cat">Revenue intelligence</div><div class="ic-q">Which of my videos is actually making me money?</div><div class="ic-prev">Which content drives Kajabi purchases — not which content gets views.</div><div class="ic-body">Right now you can see view counts. You cannot see which videos caused someone to buy a course. The system connects YouTube viewing behavior to Kajabi purchase events using tracking tags on every description link. Output: this Pre-Calculus playlist drove 67% of course purchases last month. That tells you to make more of that — not more of whatever got the most views. This data does not exist anywhere in your current stack.</div></div>
+        <div class="ic" onclick="toggleIc(this)"><div class="ic-cat">Course intelligence</div><div class="ic-q">What course should I build next?</div><div class="ic-prev">Demand signal from your existing audience before you build anything.</div><div class="ic-body">Trigonometric Functions videos have generated 420,000 views in 6 months. No standalone course exists. YouTube retention data shows 67% of viewers drop off at graphing trig functions specifically. That is unmet demand for a cleaner explanation. Recommendation: build a Trigonometric Functions course with a dedicated graphing section. This is demand signal from your existing audience — not a guess about what might sell.</div></div>
+        <div class="ic" onclick="toggleIc(this)"><div class="ic-cat">Audience intelligence</div><div class="ic-q">Who is close to buying and what do they need?</div><div class="ic-prev">Kajabi behavior reveals who needs one more reason to buy.</div><div class="ic-body">Someone who clicked the Pre-Calculus course link in three different emails but never purchased is not uninterested — they are hesitant about something. The system identifies these people and surfaces a different offer: a payment plan option, a lower entry point, or an email that addresses the most common objection. With Kajabi's Afterpay and Klarna integration, a $97 course becomes $24.25 every two weeks. That changes who can say yes.</div></div>
+        <div class="ic" onclick="toggleIc(this)"><div class="ic-cat">Timing intelligence</div><div class="ic-q">When should I publish, email, and promote?</div><div class="ic-prev">Academic calendar plus search trends builds a content schedule ahead of demand.</div><div class="ic-body">Math education has predictable demand windows every year. Back to school in August. Midterms in October and February. Finals in December and May. The system identifies which of your 13,456 existing videos match each window and schedules a community post and Shorts re-post during that period — without a new video. High-value views from content that already exists, timed to when students most need it.</div></div>
+        <div class="ic" onclick="toggleIc(this)"><div class="ic-cat">Expansion intelligence</div><div class="ic-q">Could my content reach Spanish-speaking students?</div><div class="ic-prev">Kajabi's AI dubbing now supports 100+ languages at no additional recording time.</div><div class="ic-body">Kajabi added AI dubbing in 100+ languages in 2025. Math is universal. A Spanish-language version of your Pre-Calculus course requires no additional recording — just AI dubbing applied to existing content. The Spanish-speaking math education market is large and substantially undersupplied compared to English. This is a new product that already exists inside your current catalog, waiting to be activated.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S8 DISTRIBUTION -->
+<div class="sec" id="s8">
+  <div class="inner">
+    <span class="eyebrow">Where your content goes after you upload</span>
+    <h2>One video. Seven distribution channels.<br>All automatic.</h2>
+    <p class="lead">Right now a video goes to YouTube and stops there. Here is what happens with the system running.</p>
+    <div class="dist-grid">
+      <div class="dc"><div class="dc-platform">YouTube — main channel</div><div class="dc-title">Full video with all revenue links</div><div class="dc-text">Worksheet link first, Kajabi course link second, freemathvideos.com above Udemy. Thumbnail A/B test running. YouTube quiz embedded mid-video.</div><span class="dc-tag">Always-on</span></div>
+      <div class="dc"><div class="dc-platform">YouTube — five subject channels</div><div class="dc-title">Auto-posted to matching channel</div><div class="dc-text">Calculus to McLogan Calculus. Pre-Calc to McLogan Pre-Calculus. Correct playlist assigned. Subscribers notified directly.</div><span class="dc-tag">Automatic every upload</span></div>
+      <div class="dc"><div class="dc-platform">YouTube Shorts</div><div class="dc-title">Three clips, staggered over 48 hrs</div><div class="dc-text">Best moments extracted. Each clip links back to full video. Three separate algorithmic events from one recording. Third clip held for seasonal re-post.</div><span class="dc-tag">H0, H4, H48</span></div>
+      <div class="dc"><div class="dc-platform">TikTok</div><div class="dc-title">Same clips, cold-audience hook</div><div class="dc-text">Caption written to hook a stranger, not re-engage a subscriber. TikTok analytics feed back into the intelligence layer as a third demand signal alongside YouTube and Kajabi.</div><span class="dc-tag">Cold acquisition</span></div>
+      <div class="dc"><div class="dc-platform">YouTube Community Tab</div><div class="dc-title">Direct subscriber notification</div><div class="dc-text">Bypasses the algorithm entirely. 1.62M subscribers notified directly. Inactive for 2+ years. This reactivates it on every upload without extra effort.</div><span class="dc-tag">Algorithm bypass</span></div>
+      <div class="dc"><div class="dc-platform">Kajabi Email</div><div class="dc-title">Right segment, right course link</div><div class="dc-text">Pre-Calc video sends to Pre-Calc subscribers. Not a broadcast to everyone. Matched by topic and Kajabi pipeline stage.</div><span class="dc-tag">Targeted</span></div>
+      <div class="dc"><div class="dc-platform">Facebook Community</div><div class="dc-title">New video announcement + resource drop</div><div class="dc-text">Community group gets the video announcement, worksheet download link, and a challenge post. Keeps the group active without you doing anything manually.</div><span class="dc-tag">Warm audience</span></div>
+    </div>
+    <div class="timing-box">
+      <div class="timing-hdr">Launch timing — what fires when</div>
+      <div class="timing-body">
+        <div class="ti"><div class="ti-time">Hour 0</div><div class="ti-what">YouTube live. Email sends. Community post. Sub-channels. Facebook post. TikTok clip 1.</div></div>
+        <div class="ti"><div class="ti-time">Hour 4</div><div class="ti-what">YouTube Shorts clip 1. Drives Shorts viewers to full video.</div></div>
+        <div class="ti"><div class="ti-time">Hour 24</div><div class="ti-what">Performance check. If below average, second community push fires. TikTok clip 2.</div></div>
+        <div class="ti"><div class="ti-time">Hour 48</div><div class="ti-what">YouTube Shorts clip 2. TikTok clip 3. Third algorithmic event.</div></div>
+        <div class="ti"><div class="ti-time">Seasonal</div><div class="ti-what">Third Shorts clip held for finals or midterm window re-post when demand spikes.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S9 RESOURCES + PRICING -->
+<div class="sec" id="s9">
+  <div class="inner">
+    <span class="eyebrow">What one video actually produces</span>
+    <h2>One recording session.<br>Four sellable or engagement assets.</h2>
+    <p class="lead">The system generates all of these automatically from the transcript. You record once. The assets are ready before you upload.</p>
+    <div class="res-from">
+      <div class="res-from-label">Assets generated from every upload</div>
+      <div class="res-grid">
+        <div class="res-card"><div class="res-type free">Free lead magnet</div><div class="res-name">Worksheet PDF</div><div class="res-desc">Practice problems and answer key from the video content. Download link in description captures email address. Entry point to Kajabi sequence.</div><div class="res-price">$0 — email capture</div></div>
+        <div class="res-card"><div class="res-type yt">YouTube feature</div><div class="res-name">In-video Quiz</div><div class="res-desc">A practice problem embedded mid-video using YouTube's new quiz feature. Increases watch time and retention signals. Viewers answer without leaving the video.</div><div class="res-price">Free — boosts algorithm signals</div></div>
+        <div class="res-card"><div class="res-type paid">Kajabi product</div><div class="res-name">Premium Practice Bundle</div><div class="res-desc">Extended problem set, step-by-step worked solutions, and a study guide. Sold as a digital download in Kajabi. No additional recording required.</div><div class="res-price">$9–$19 per bundle</div></div>
+        <div class="res-card"><div class="res-type paid">Kajabi product</div><div class="res-name">Exam Prep Pack</div><div class="res-desc">For topics near finals or midterm season, an exam prep version of the bundle with timed practice tests is automatically flagged as a seasonal product opportunity.</div><div class="res-price">$19–$29 per pack</div></div>
+      </div>
+    </div>
+    <div class="price-ladder">
+      <div class="pl-label">Pricing architecture — a product ladder your audience can climb</div>
+      <div class="pl-grid">
+        <div class="pl-tier"><div class="pl-tier-label">Entry</div><div class="pl-tier-name">Free worksheet</div><div class="pl-tier-price">$0</div><div class="pl-tier-desc">Captures email. Starts the sequence. Entry to everything else.</div></div>
+        <div class="pl-tier"><div class="pl-tier-label">Low ticket</div><div class="pl-tier-name">Practice bundle</div><div class="pl-tier-price">$9–$19</div><div class="pl-tier-desc">Extended problems, worked solutions. No barrier. Easy first purchase.</div></div>
+        <div class="pl-tier"><div class="pl-tier-label">Mid ticket</div><div class="pl-tier-name">Exam prep pack</div><div class="pl-tier-price">$29–$49</div><div class="pl-tier-desc">Timed tests, full solutions, high-urgency purchase around exam season.</div></div>
+        <div class="pl-tier"><div class="pl-tier-label">Core product</div><div class="pl-tier-name">Full course</div><div class="pl-tier-price">$97–$197</div><div class="pl-tier-desc">Complete course with diagnostic, videos, worksheets. Afterpay available — $24/2 weeks.</div></div>
+        <div class="pl-tier"><div class="pl-tier-label">Recurring</div><div class="pl-tier-name">Membership</div><div class="pl-tier-price">$19–$39/mo</div><div class="pl-tier-desc">Monthly access. New resources, Q&A sessions, community. Predictable monthly revenue.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S10 SPONSORSHIP -->
+<div class="sec" id="s10">
+  <div class="inner">
+    <span class="eyebrow amber">Sponsorship — the biggest untapped revenue stream</span>
+    <h2>Two deals per month.<br>$20,000–$40,000. No extra videos.</h2>
+    <p class="lead">At 1.62M subscribers in math education, you are in the top tier for sponsor rates. This revenue stream does not require additional content — it layers into videos you are already making.</p>
+    <div class="spons-numbers">
+      <div class="sn"><div class="sn-label">Rate per integration</div><div class="sn-val">$10K–$20K</div><div class="sn-how">60-second mid-roll read in math education at 1.62M subscribers. Based on 2025–2026 market benchmarks.</div></div>
+      <div class="sn"><div class="sn-label">Two deals per month</div><div class="sn-val">$20K–$40K</div><div class="sn-how">Conservative. Channels at this size with engaged math education audiences often run 2–4 integrations monthly.</div></div>
+      <div class="sn"><div class="sn-label">Annual potential</div><div class="sn-val">$240K–$480K</div><div class="sn-how">From sponsorships alone. On top of AdSense, course revenue, and membership. No new content required.</div></div>
+    </div>
+    <span class="eyebrow blue" style="margin-bottom:14px">Brands actively sponsoring math and education channels right now</span>
+    <div class="brand-grid">
+      <div class="brand-card"><div class="brand-name">Brilliant.org</div><div class="brand-why">Interactive math and science learning. Direct audience match. One of the most active education sponsors.</div><div class="brand-rate">Premium rates — exact audience fit</div></div>
+      <div class="brand-card"><div class="brand-name">Photomath</div><div class="brand-why">Math problem solver app. Your audience uses it or would. Strong conversion from math education channels.</div><div class="brand-rate">High conversion — product-audience match</div></div>
+      <div class="brand-card"><div class="brand-name">Chegg</div><div class="brand-why">Homework help and tutoring platform. Active on education channels. Pays premium for student-audience creators.</div><div class="brand-rate">Active in education category</div></div>
+      <div class="brand-card"><div class="brand-name">IXL Learning</div><div class="brand-why">Math practice platform K–12. Parent and student audience. Long-term partnership potential.</div><div class="brand-rate">Education-first brand</div></div>
+      <div class="brand-card"><div class="brand-name">Wolfram Alpha</div><div class="brand-why">Computational math tool. Your audience already uses it. Native sponsorship integration.</div><div class="brand-rate">Niche audience alignment</div></div>
+      <div class="brand-card"><div class="brand-name">Quizlet</div><div class="brand-why">Study tool with massive student user base. Active sponsor across education content in 2025.</div><div class="brand-rate">High volume sponsor — student focus</div></div>
+      <div class="brand-card"><div class="brand-name">NordVPN / Squarespace</div><div class="brand-why">Sponsor any engaged audience regardless of niche. High volume, reliable payments, easy integration for established channels.</div><div class="brand-rate">Broad education category active</div></div>
+      <div class="brand-card"><div class="brand-name">Varsity Tutors</div><div class="brand-why">Online tutoring marketplace. Your audience is exactly their customer. High intent, high value audience for them.</div><div class="brand-rate">Strong audience overlap</div></div>
+    </div>
+    <div class="spons-pipeline">
+      <div class="sp-label">How the sponsorship pipeline works — system handles everything except the final yes</div>
+      <ul class="sp-steps">
+        <li class="sp-step"><span class="sp-n">1</span><div class="sp-body"><div class="sp-name">Rate card defined before any outreach</div><div class="sp-what">60-second mid-roll rate, dedicated video rate, Shorts bundle rate. Your floor, your preferred terms. Set once. Referenced on every pitch.</div></div></li>
+        <li class="sp-step"><span class="sp-n">2</span><div class="sp-body"><div class="sp-name">System identifies brands actively sponsoring math education creators</div><div class="sp-what">Pulls from public sponsorship data and known active brands. Filters by audience fit and current campaign activity. Not cold guesses — brands that are already paying creators like you.</div><div class="sp-auto">→ Automated prospecting, runs monthly</div></div></li>
+        <li class="sp-step"><span class="sp-n">3</span><div class="sp-body"><div class="sp-name">Personalized outreach drafted for your approval</div><div class="sp-what">Each pitch references the specific brand, why your audience matches their customer, your channel stats, and a suggested integration format. You review and approve. System sends nothing without your sign-off.</div><div class="sp-auto">→ Draft ready in dashboard, you approve before sending</div></div></li>
+        <li class="sp-step"><span class="sp-n">4</span><div class="sp-body"><div class="sp-name">Response tracking and follow-up sequence</div><div class="sp-what">No response after 5 days triggers a follow-up automatically. Interested replies are flagged in dashboard with context for you to continue the conversation.</div><div class="sp-auto">→ Automated follow-up, human closes the deal</div></div></li>
+        <li class="sp-step"><span class="sp-n">5</span><div class="sp-body"><div class="sp-name">Approved deal scheduled in content calendar</div><div class="sp-what">Read scheduled into the upload that makes most sense. Brief added to the approval dashboard for that upload. Description updated to include the sponsor mention.</div><div class="sp-auto">→ Calendar integration automatic</div></div></li>
+        <li class="sp-step"><span class="sp-n">6</span><div class="sp-body"><div class="sp-name">Invoice triggered on video publish</div><div class="sp-what">Video goes live, invoice fires automatically to the brand contact. Payment terms tracked. Follow-up triggered if overdue.</div><div class="sp-auto">→ Fully automated invoicing on publish</div></div></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- S11 KAJABI UNUSED -->
+<div class="sec" id="s11">
+  <div class="inner">
+    <span class="eyebrow">What Kajabi already has that you are not using</span>
+    <h2>You are paying for tools<br>that are sitting idle.</h2>
+    <p class="lead">Kajabi added significant features in 2024 and 2025. Most of them are directly relevant to what you are building. None of them require switching platforms.</p>
+    <div class="kajabi-grid">
+      <div class="kj"><div class="kj-label">Currently idle</div><div class="kj-name">Email automation sequences</div><div class="kj-text">Topic-tagged welcome sequences, level-up sequences, high-intent retargeting, win-back campaigns. All built into Kajabi. Nothing is running.</div><div class="kj-why">→ System activates all of these in Phase 1</div></div>
+      <div class="kj"><div class="kj-label">Currently idle</div><div class="kj-name">Afterpay and Klarna checkout</div><div class="kj-text">Buy-now-pay-later built into Kajabi Payments. A $97 course becomes $24.25 every two weeks. Changes who can say yes. Not activated on any product currently.</div><div class="kj-why">→ Activate on all courses in Phase 1</div></div>
+      <div class="kj"><div class="kj-label">Currently idle</div><div class="kj-name">Community circles and live rooms</div><div class="kj-text">Kajabi Community 2.0 supports segmented circles, live Q&A rooms, and member challenges — all inside the platform. Replaces the need for a separate Facebook group eventually.</div><div class="kj-why">→ Phase 4 buildout once core system running</div></div>
+      <div class="kj"><div class="kj-label">Currently idle</div><div class="kj-name">Kajabi Newsletter product</div><div class="kj-text">A dedicated newsletter separate from course emails. Free or paid subscription. Direct audience connection outside of YouTube's algorithm. Not set up.</div><div class="kj-why">→ Phase 3 once email list is growing</div></div>
+      <div class="kj"><div class="kj-label">New in 2025</div><div class="kj-name">AI dubbing — 100+ languages</div><div class="kj-text">Kajabi can dub existing course videos in Spanish, Portuguese, French, and 97 other languages. Math is universal. Spanish-language Pre-Calculus course exists in your catalog right now. Zero additional recording.</div><div class="kj-why">→ New product from existing content</div></div>
+      <div class="kj"><div class="kj-label">Underused</div><div class="kj-name">Digital downloads product type</div><div class="kj-text">Kajabi supports standalone digital download products with multiple files. Practice bundles, formula sheets, exam prep packs — all can be sold directly without a full course structure. Replaces Shopify entirely.</div><div class="kj-why">→ Shopify consolidation in Phase 1</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S12 DASHBOARD -->
+<div class="sec" id="s12">
+  <div class="inner">
+    <span class="eyebrow">What you actually open each morning</span>
+    <h2>One screen. Everything you need.<br>Nothing you don't.</h2>
+    <p class="lead">This shows what the dashboard looks like once the system is running. Real data populates from your YouTube API, Kajabi API, and Google Search Console. You open it once. It tells you what to do. You do it. You close it.</p>
+    <div class="dash-mock">
+      <div class="dash-bar"><span class="dash-bar-t">BRIAN McLOGAN — INTELLIGENCE DASHBOARD</span><span class="dash-bar-d">Tuesday · Upload day</span></div>
+      <div class="dash-inner">
+        <div class="dash-row4">
+          <div class="dm2"><div class="dm2-l">Time this upload</div><div class="dm2-v blue">51 min</div><div class="dm2-s">↓ from 9+ hours</div></div>
+          <div class="dm2"><div class="dm2-l">Email list this month</div><div class="dm2-v blue">+1,240</div><div class="dm2-s">From worksheet opt-ins</div></div>
+          <div class="dm2"><div class="dm2-l">Kajabi revenue trend</div><div class="dm2-v amber">↑ trending</div><div class="dm2-s">Attribution live Day 45</div></div>
+          <div class="dm2"><div class="dm2-l">Pending approvals</div><div class="dm2-v" style="font-size:20px">3 items</div><div class="dm2-s">All ready</div></div>
+        </div>
+        <div class="dash-row2">
+          <div class="dp2">
+            <div class="dp2-title">Top 5 video ideas — ranked by revenue potential</div>
+            <ul class="idea-list">
+              <li class="idea-item"><div class="idea-rank">#1 — Make this week</div><div class="idea-name">Unit Circle — Complete Pre-Calc Finals Guide</div><div class="idea-why">Search volume +34% into finals. No video in 90 days. Your highest-converting topic for Kajabi purchases historically.</div><div class="idea-tags"><span class="itag rev">High revenue</span><span class="itag sea">Finals in 5 wks</span></div></li>
+              <li class="idea-item"><div class="idea-rank">#2 — Next week</div><div class="idea-name">Solving Systems of Equations — 5 Methods</div><div class="idea-why">67% drop-off at method 3 on existing videos. Unmet demand signal. No comparison-format video exists.</div><div class="idea-tags"><span class="itag gap">Catalog gap</span></div></li>
+              <li class="idea-item"><div class="idea-rank">#3 — This month</div><div class="idea-name">Rational Functions Masterclass</div><div class="idea-why">420K views across related videos. No standalone course. Worksheet opt-in 3× your average. Strong course opportunity.</div><div class="idea-tags"><span class="itag rev">Course opp</span><span class="itag gap">Product gap</span></div></li>
+            </ul>
+          </div>
+          <div class="dp2">
+            <div class="dp2-title">Pending approvals</div>
+            <ul class="appr-list">
+              <li class="appr-item"><span class="appr-name">Thumbnail — A or B (Unit Circle video)</span><span class="appr-b urgent">24hr window</span></li>
+              <li class="appr-item"><span class="appr-name">Email draft — Pre-Calc segment, course link</span><span class="appr-b ready">Ready</span></li>
+              <li class="appr-item"><span class="appr-name">Community post — unit circle challenge question</span><span class="appr-b ready">Ready</span></li>
+              <li class="appr-item"><span class="appr-name">Worksheet PDF — Unit Circle Practice + answers</span><span class="appr-b ready">Ready</span></li>
+              <li class="appr-item"><span class="appr-name">YouTube quiz — practice problem for mid-video</span><span class="appr-b ready">Ready</span></li>
+              <li class="appr-item"><span class="appr-name">TikTok caption — cold hook for clip 1</span><span class="appr-b ready">Ready</span></li>
+              <li class="appr-item"><span class="appr-name">Brilliant.org read — scheduled for Thursday upload</span><span class="appr-b ready">Sponsor</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="dash-row3">
+          <div class="dp2">
+            <div class="dp2-title">Revenue intelligence — this week</div>
+            <ul class="rev-list">
+              <li class="rev-item"><span class="rev-src">Pre-Calculus Simplified — 3 videos drove purchases</span><span class="rev-val">7 sales</span></li>
+              <li class="rev-item"><span class="rev-src">Unit circle worksheet opt-in → email sequence</span><span class="rev-val">3 sales</span></li>
+              <li class="rev-item"><span class="rev-src">Brilliant.org read — Tuesday video</span><span class="rev-val">$12,000</span></li>
+              <li class="rev-item"><span class="rev-src">High-intent retargeting — 12 non-converters</span><span class="rev-val">2 converted</span></li>
+              <li class="rev-item"><span class="rev-src">TikTok → YouTube → email opt-in path</span><span class="rev-val">84 new</span></li>
+              <li class="rev-item"><span class="rev-src">Afterpay plan started — Pre-Calc course</span><span class="rev-val">5 new plans</span></li>
+            </ul>
+          </div>
+          <div class="dp2">
+            <div class="dp2-title">Fine-tuning this week — what the system learned</div>
+            <ul class="ft-list">
+              <li class="ft-item"><div class="ft-what">Email send time moved</div><div class="ft-why">Wednesday 6pm outperformed Thursday 7am by 18% open rate over 4 tests.</div><div class="ft-action">→ Applied automatically going forward</div></li>
+              <li class="ft-item"><div class="ft-what">Thumbnail brief updated</div><div class="ft-why">Equation-forward style beat face-reaction by 23% CTR on Calculus topics.</div><div class="ft-action">→ Calculus thumbnail brief updated</div></li>
+              <li class="ft-item"><div class="ft-what">TikTok hook pattern confirmed</div><div class="ft-why">"Most students get this wrong" outperformed question hooks by 31% completion rate.</div><div class="ft-action">→ TikTok caption template updated</div></li>
+              <li class="ft-item"><div class="ft-what">Retargeting queued</div><div class="ft-why">3 subscribers clicked Pre-Calc Simplified 3+ times without purchasing.</div><div class="ft-action">→ Payment plan offer ready for approval</div></li>
+            </ul>
+          </div>
+          <div class="dp2">
+            <div class="dp2-title">Comment intelligence — drafts ready</div>
+            <ul class="cm-list">
+              <li class="cm-item"><div class="cm-type q">Question — reply draft ready</div><div class="cm-text">"Still don't get how to find the horizontal asymptote when degrees are equal"</div><div class="cm-draft">→ Draft links to existing video + content gap logged</div></li>
+              <li class="cm-item"><div class="cm-type w">Student win — acknowledge + social proof</div><div class="cm-text">"Failed pre-calc twice. Watched your unit circle playlist and passed my final"</div><div class="cm-draft">→ Reply draft + permission request to share</div></li>
+              <li class="cm-item"><div class="cm-type s">Demand signal — 14 comments this week</div><div class="cm-text">14 comments asking about rational functions graphing. No dedicated video exists.</div><div class="cm-draft">→ Added to top video ideas as demand signal</div></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S13 BUILD -->
+<div class="sec" id="s13">
+  <div class="inner">
+    <span class="eyebrow">How we get there</span>
+    <h2>Four phases. Each one delivers<br>value before the next begins.</h2>
+    <p class="lead">Nothing requires the full system to be complete before you see results. Phase 1 alone saves 7+ hours per upload. Tap each phase to expand it.</p>
+    <div class="phase-list">
+      <div class="phase-card">
+        <div class="phase-hdr" onclick="ph('p1')"><div class="p-badge">1</div><div class="p-info"><div class="p-name">Time saving — the upload automation chain</div><div class="p-when">Weeks 1–2 · You feel this immediately</div></div><div class="p-tog" id="p1t">+</div></div>
+        <div class="phase-body" id="p1"><div class="prereq"><strong>What you have at the end of Phase 1</strong>Drop a file, walk away. Come back to a dashboard with everything ready to approve. Upload takes under an hour total. Email opt-in live. Kajabi and YouTube talking to each other for the first time. Shopify consolidated into Kajabi.</div>
+        <ul class="step-list">
+          <li class="step-item"><span class="step-when">Week 1</span><div class="step-body"><div class="step-name">Raw file trigger + transcript chain</div><div class="step-what">Google Drive webhook detects file drop. Audio transcribed. Transcript feeds all downstream agents simultaneously.</div></div></li>
+          <li class="step-item"><span class="step-when">Week 1</span><div class="step-body"><div class="step-name">Worksheet PDF + YouTube quiz generation</div><div class="step-what">Worksheet with answer key generated from transcript. YouTube in-video quiz drafted from the same content. Both land in dashboard for approval. Quality review active for first 30 days.</div></div></li>
+          <li class="step-item"><span class="step-when">Week 1</span><div class="step-body"><div class="step-name">Description, chapters, email draft, community post, Facebook post</div><div class="step-what">Five agents fire from transcript simultaneously. All revenue links inserted in correct order. All outputs in approval dashboard.</div></div></li>
+          <li class="step-item"><span class="step-when">Week 1</span><div class="step-body"><div class="step-name">Thumbnail A/B — two concepts generated</div><div class="step-what">Two concepts for selection. System tests both, applies winner at 24 hours, logs pattern. A/B learning begins from day one.</div></div></li>
+          <li class="step-item"><span class="step-when">Week 1</span><div class="step-body"><div class="step-name">Shopify consolidated into Kajabi digital downloads</div><div class="step-what">Products migrated. Afterpay and Klarna activated on all courses. One platform, one customer record.</div></div></li>
+          <li class="step-item"><span class="step-when">Week 2</span><div class="step-body"><div class="step-name">One-click publish + YouTube–Kajabi email trigger</div><div class="step-what">Approval fires YouTube metadata, email to matched Kajabi segment, community post, Facebook post, sub-channels simultaneously.</div><div class="step-dep">→ Revenue attribution data starts accumulating from this moment</div></div></li>
+        </ul></div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-hdr" onclick="ph('p2')"><div class="p-badge">2</div><div class="p-info"><div class="p-name">Distribution — getting the content everywhere</div><div class="p-when">Month 2 · After Phase 1 running smoothly</div></div><div class="p-tog" id="p2t">+</div></div>
+        <div class="phase-body" id="p2"><div class="prereq"><strong>What you have at the end of Phase 2</strong>Every upload reaches seven channels automatically. TikTok active. Sub-channels posting. Email opt-in growing the list. Attribution data building. Comment intelligence running.</div>
+        <ul class="step-list">
+          <li class="step-item"><span class="step-when">Month 2</span><div class="step-body"><div class="step-name">Five subject channels connected</div><div class="step-what">YouTube API OAuth for each channel. Topic routing logic. Playlist assignment. Audience overlap analysis begins.</div></div></li>
+          <li class="step-item"><span class="step-when">Month 2</span><div class="step-body"><div class="step-name">TikTok + staggered Shorts schedule</div><div class="step-what">Clips formatted for both platforms with separate caption strategies. Staggered posting creates multiple algorithmic events over 48 hours.</div></div></li>
+          <li class="step-item"><span class="step-when">Month 2</span><div class="step-body"><div class="step-name">Email opt-in sequence + Kajabi welcome flow</div><div class="step-what">Worksheet as free download captures email. Topic tag applied on opt-in. Welcome sequence fires. 7-step topic-tagged nurture begins.</div></div></li>
+          <li class="step-item"><span class="step-when">Month 2</span><div class="step-body"><div class="step-name">Comment intelligence + sponsorship outreach begins</div><div class="step-what">Comment scanning active. Reply drafts in dashboard. First sponsorship outreach batch sent to 8 target brands with rate card defined.</div></div></li>
+        </ul></div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-hdr" onclick="ph('p3')"><div class="p-badge">3</div><div class="p-info"><div class="p-name">Intelligence — the system starts learning</div><div class="p-when">Month 3 · When 60 days of data have accumulated</div></div><div class="p-tog" id="p3t">+</div></div>
+        <div class="phase-body" id="p3"><div class="prereq"><strong>What you have at the end of Phase 3</strong>Dashboard shows which videos made money. Content recommendations ranked by revenue. System improving its own outputs weekly. First sponsorship deals live.</div>
+        <ul class="step-list">
+          <li class="step-item"><span class="step-when">Month 3</span><div class="step-body"><div class="step-name">Content-to-revenue attribution live</div><div class="step-what">YouTube viewing behavior connected to Kajabi purchases for the first time. Which videos drove sales this month — visible in the dashboard.</div></div></li>
+          <li class="step-item"><span class="step-when">Month 3</span><div class="step-body"><div class="step-name">Full recommendation engine + fine-tuning panel</div><div class="step-what">Video ideas ranked by revenue not views. Every recommendation tracked for outcome. Fine-tuning panel shows what the system learned and adjusted this week.</div></div></li>
+          <li class="step-item"><span class="step-when">Month 3</span><div class="step-body"><div class="step-name">Seasonal demand campaigns + high-intent retargeting</div><div class="step-what">Academic calendar activates pre-scheduled campaigns. High-intent non-converters identified and served different offers automatically.</div></div></li>
+          <li class="step-item"><span class="step-when">Month 3</span><div class="step-body"><div class="step-name">Kajabi Newsletter product launched</div><div class="step-what">Standalone newsletter separate from course emails. Grows its own subscriber base. Becomes another owned audience channel independent of YouTube.</div></div></li>
+        </ul></div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-hdr" onclick="ph('p4')"><div class="p-badge">4</div><div class="p-info"><div class="p-name">Expansion — new revenue, new audiences</div><div class="p-when">Month 4+ · When core system is proven</div></div><div class="p-tog" id="p4t">+</div></div>
+        <div class="phase-body" id="p4"><div class="prereq"><strong>What you have at the end of Phase 4</strong>Sponsorship revenue active and systematized. Spanish-language course live. Kajabi community replacing Facebook group. Pricing architecture fully implemented. System running at full intelligence.</div>
+        <ul class="step-list">
+          <li class="step-item"><span class="step-when">Month 4</span><div class="step-body"><div class="step-name">Sponsorship pipeline fully automated</div><div class="step-what">Prospecting, outreach, scheduling, invoicing all running. Rate card enforced. Two deals per month target actively managed.</div></div></li>
+          <li class="step-item"><span class="step-when">Month 4</span><div class="step-body"><div class="step-name">Udemy restructured — discovery to Kajabi pipeline</div><div class="step-what">All Udemy listings updated to drive full course purchases to Kajabi. You keep the discoverability, recover the margin. One-time setup, permanent improvement.</div></div></li>
+          <li class="step-item"><span class="step-when">Month 4</span><div class="step-body"><div class="step-name">Spanish-language course via Kajabi AI dubbing</div><div class="step-what">Pre-Calculus course dubbed in Spanish using Kajabi's AI dubbing. New product from existing content. New audience that existing catalog was not reaching.</div></div></li>
+          <li class="step-item"><span class="step-when">Month 5+</span><div class="step-body"><div class="step-name">Kajabi Community replaces Facebook group</div><div class="step-what">Community circles, live rooms, and member challenges migrated to Kajabi. One login for students. Better data on member behavior feeding the intelligence layer.</div></div></li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S14 CLOSE -->
+<div class="sec" id="s14">
+  <div class="inner">
+    <span class="eyebrow inv">To close</span>
+    <h2 class="inv" style="font-style:italic">You built something real.<br>It deserves a system that<br>works as hard as you did.</h2>
+    <p class="lead inv">Fifteen years. 13,456 videos. 1.62 million people who trust you to make math make sense. The content is done. The audience is there. The only question is whether the infrastructure around it is working as hard as you have. This is what it looks like when it is.</p>
+  </div>
+</div>
+
+<div class="disclaimer">All revenue figures are directional estimates based on 2025–2026 industry benchmarks for math education channels at this subscriber level — not guarantees. Sponsorship rates vary by brand, format, and negotiation. Actual results depend on your specific Kajabi data, current pricing, and market conditions once the attribution system is live.</div>
+
+<script>
+const sids=['s1','s2','s3','s4','s5','s6','s7','s8','s9','s10','s11','s12','s13','s14'];
+const dots=document.querySelectorAll('.nd');
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
+function updateNav(){
+  let cur=0;
+  sids.forEach((id,i)=>{
+    const el=document.getElementById(id);
+    if(el&&el.getBoundingClientRect().top<=window.innerHeight*.5)cur=i;
+  });
+  dots.forEach((d,i)=>d.classList.toggle('on',i===cur));
+}
+window.addEventListener('scroll',updateNav,{passive:true});
+updateNav();
+function tc(id){
+  const el=document.getElementById(id);
+  if(!el)return;
+  const open=el.classList.contains('open');
+  document.querySelectorAll('.cs2-detail').forEach(e=>e.classList.remove('open'));
+  if(!open)el.classList.add('open');
+}
+function toggleIc(card){
+  const body=card.querySelector('.ic-body');
+  if(!body)return;
+  const open=body.classList.contains('open');
+  document.querySelectorAll('.ic-body').forEach(b=>b.classList.remove('open'));
+  document.querySelectorAll('.ic').forEach(c=>c.classList.remove('open'));
+  if(!open){body.classList.add('open');card.classList.add('open');}
+}
+function ph(id){
+  const body=document.getElementById(id);
+  const tog=document.getElementById(id+'t');
+  const open=body.classList.contains('open');
+  body.classList.toggle('open',!open);
+  tog.textContent=open?'+':'−';
+}
+</script>
+</body>
+</html>
